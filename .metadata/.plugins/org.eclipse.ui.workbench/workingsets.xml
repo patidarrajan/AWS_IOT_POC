@@ -9,7 +9,7 @@
 <item elementID="=awss3/src\/test\/java" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
 </workingSet>
 <workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1547620825816_3" label="aws-iot-device-sdk-java-pom" name="aws-iot-device-sdk-java-pom">
-<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Aws-Presigned-Url-Generation" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/Aws-Pre-Signed-Url-Generation" type="4"/>
 </workingSet>
 <workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1547620791170_2" label="Window Working Set" name="Aggregate for window 1547620791170"/>
 </workingSetManager>

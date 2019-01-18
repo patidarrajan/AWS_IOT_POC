@@ -1,7 +1,0 @@
-1547801386663	Rename resource 'JobUI.fxml'
-1547801409940	Rename type 'JobController'
-1547802307371	Delete element
-1547802318510	Delete element
-1547808436423	Rename local variable 'bucket_name'
-1547814261535	Rename type 'StartApplication'
-1547815009932	Extract constant 'SNAPSHOT'
