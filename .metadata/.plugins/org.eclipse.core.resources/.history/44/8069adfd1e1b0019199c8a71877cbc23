@@ -1,0 +1,11 @@
+# Client endpoint, e.g. <prefix>.iot.us-east-1.amazonaws.com
+clientEndpoint=XXXXXXXXXXXXXXXXXXXXXXX.XXXXXXX.amazonaws.com
+
+# Client ID, unique client ID per connection
+clientId=XXXXXXX
+
+
+awsAccessKeyId=XXXXXXXXXXXXXXXXXXXXXX
+awsSecretAccessKey=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+awsRegion=ap-south-1
