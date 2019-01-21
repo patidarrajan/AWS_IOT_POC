@@ -1,4 +1,0 @@
-INDEX VERSION 1.131+/mnt/264AEF0B4AEED699/WORKSPACE/.metadata/.plugins/org.eclipse.jdt.core
-384083361.index
-2842466772.index
-2302913871.index
