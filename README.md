@@ -23,13 +23,16 @@ This Application is made for firmware download.
 **Note:** Place This job document file into S3. Attach this job document when creating new IOT job. 
 
 ### **Snapshots:**
-#### 1. Job Notification after Creation
+#### 1. Create Job 
+![Create Job](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Create-Thing-Job-App/src/main/resources/img_CreateJob.png)
+
+#### 2. Job Notification after Creation
 ![Job Notification after Creation image](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Start-Update-Thing-Job-App/src/main/resources/img_NotifyJob.png)
 
 
-#### 2. Start Job to download firmware
+#### 3. Start Job to download firmware
 ![Start Job to download firmware image](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Start-Update-Thing-Job-App/src/main/resources/img_StartJob.png)
 
 
-#### 3. Download Firmware and update status of job to Success or Failed as per download status.
+#### 4. Download Firmware and update status of job to Success or Failed as per download status.
 ![Download Firmware and update status of job image](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Start-Update-Thing-Job-App/src/main/resources/img_DownloadFirmware.png)
