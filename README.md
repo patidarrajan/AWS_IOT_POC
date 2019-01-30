@@ -24,12 +24,12 @@ This Application is made for firmware download.
 
 ### **Snapshots:**
 #### 1. Job Notification after Creation
-![alt text](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Start-Update-Thing-Job-App/src/main/resources/img_NotifyJob.png)
+![Job Notification after Creation image](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Start-Update-Thing-Job-App/src/main/resources/img_NotifyJob.png)
 
 
 #### 2. Start Job to download firmware
-![alt text](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Start-Update-Thing-Job-App/src/main/resources/img_StartJob.png)
+![Start Job to download firmware image](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Start-Update-Thing-Job-App/src/main/resources/img_StartJob.png)
 
 
 #### 3. Download Firmware and update status of job to Success or Failed as per download status.
-![alt text](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Start-Update-Thing-Job-App/src/main/resources/img_DownloadFirmware.png)
+![Download Firmware and update status of job image](https://github.com/patidarrajan/AWS_IOT_POC/blob/master/Iot-Start-Update-Thing-Job-App/src/main/resources/img_DownloadFirmware.png)
