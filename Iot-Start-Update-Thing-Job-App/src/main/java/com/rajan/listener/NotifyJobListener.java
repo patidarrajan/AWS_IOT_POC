@@ -6,6 +6,7 @@ import com.rajan.controller.JobController;
 import com.rajan.model.JobQueue;
 
 import javafx.application.Platform;
+import javafx.scene.paint.Color;
 
 public class NotifyJobListener implements TopicListener {
 	private JobController controller;
@@ -25,6 +26,7 @@ public class NotifyJobListener implements TopicListener {
 				JobQueue jobQueue = new Gson().fromJson(responseJson, JobQueue.class);
 				if (jobQueue.getJobs() != null) {
 					controller.getJobLbl().setText("New Job is available: ");
+					controller.getJobLbl().setTextFill(Color.web("#006666"));
 					controller.getJobNameLbl().setText(jobQueue.getJobs().getQUEUED().get(0).getJobId());
 					controller.getStartJobBtn().setVisible(true);
 				}

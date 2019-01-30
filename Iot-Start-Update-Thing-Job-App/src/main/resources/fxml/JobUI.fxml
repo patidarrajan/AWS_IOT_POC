@@ -14,7 +14,7 @@
    <children>
       <HBox prefHeight="38.0" prefWidth="580.0" spacing="10.0">
          <children>
-            <Label fx:id="jobLbl" text="No IOT Job is available" textFill="#3e9a0c" wrapText="true">
+            <Label fx:id="jobLbl" text="No IOT job is available" textFill="#e15307" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font>
@@ -24,7 +24,7 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <Button fx:id="startJobBtn" defaultButton="true" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="98.0" text="Start Job" textAlignment="CENTER" visible="false" wrapText="true" />
+            <Button fx:id="startJobBtn" defaultButton="true" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="98.0" text="Start Job" textAlignment="CENTER" textFill="#427203" visible="false" wrapText="true" />
          </children>
       </HBox>
       <HBox prefHeight="31.0" prefWidth="580.0">
