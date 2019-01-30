@@ -20,4 +20,5 @@ JOB Document: sample-job-document.json
         "firmwareUrl":"< Your Firmware Presigned Url which was generated from presigned url generation project >"
     }
     
+Note: Place This job document file into S3. Attach this job document with new job. 
    
