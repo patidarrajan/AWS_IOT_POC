@@ -24,8 +24,9 @@ public class JITRWithThingCreationHandler implements RequestHandler<RequestClass
 	private Context context;
 	private AWSIot client;
 	private static final String POLICY_PREFIX = "Rajan_JITR_";
+	//Change following detail as per your use case
 	private static final String REGION = "ap-south-1";
-	private static final String ACCOUNT_ID = "761572862303";
+	private static final String ACCOUNT_ID = "XXXXXXXX";
 	private static final String POLICY_JSON = "{ \"Version\": \"2012-10-17\", \"Statement\": [{ \"Effect\": \"Allow\", \"Action\": [\"iot:Connect\"], \"Resource\": [\"%s\"] }] }";
 	private String certificateARN;
 
