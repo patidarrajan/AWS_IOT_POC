@@ -23,10 +23,10 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 public class JITRWithThingCreationHandler implements RequestHandler<RequestClass, String> {
 	private Context context;
 	private AWSIot client;
-	private static final String POLICY_PREFIX = "Rajan_JITR_";
-	//Change following detail as per your use case
+	private static final String POLICY_PREFIX = "POLICY_";
+	// Change following detail as per your use case
 	private static final String REGION = "ap-south-1";
-	private static final String ACCOUNT_ID = "XXXXXXXX";
+	private static final String ACCOUNT_ID = "XXXXXXXXXXXXX";
 	private static final String POLICY_JSON = "{ \"Version\": \"2012-10-17\", \"Statement\": [{ \"Effect\": \"Allow\", \"Action\": [\"iot:Connect\"], \"Resource\": [\"%s\"] }] }";
 	private String certificateARN;
 
@@ -38,24 +38,24 @@ public class JITRWithThingCreationHandler implements RequestHandler<RequestClass
 		client = AWSIotClientBuilder.defaultClient();
 		String certificateId = input.certificateId;
 		certificateARN = "arn:aws:iot:" + REGION + ":" + ACCOUNT_ID + ":cert/" + certificateId;
-		
+
 		String thingName = getThingNameFromCertificate(input.getCertificateId()).replace(" ", "_");
 		createThing(thingName);
 		context.getLogger().log("Thing created successfully" + thingName);
-		
-		String policyName = POLICY_PREFIX + certificateId;
+
+		String policyName = POLICY_PREFIX + thingName;
 		createPolicy(policyName);
 		context.getLogger().log("Policy created successfully: " + policyName);
-		
+
 		attachPolicyToCertificate(policyName);
 		context.getLogger().log("Policy has been attached to certificate");
-		
+
 		attachThingToCertificate(thingName);
 		context.getLogger().log("Thing has been attached to certificate");
-		
+
 		activateCertificate(certificateId);
 		context.getLogger().log("Certificate is activated successfully");
-		
+
 		return "Policy and Thing has been created. \nPolicy and thing has been attached to certificate. \nCertificate activation is done.";
 	}
 
@@ -170,6 +170,9 @@ public class JITRWithThingCreationHandler implements RequestHandler<RequestClass
 		} catch (CertificateException e) {
 			context.getLogger().log(e.getMessage());
 		}
-		return certificate.getIssuerDN().getName().replace("OU=\"", "").split(" O=")[0];
+		context.getLogger().log("SUBJECT: " + certificate.getSubjectDN().getName());
+		context.getLogger().log("final:" + certificate.getSubjectDN().getName().split(",")[0].substring(3));
+		return certificate.getSubjectDN().getName().split(",")[0].substring(3);
 	}
 }
+
