@@ -71,5 +71,11 @@ This POC will provide **Just In Time Registration (JITR) of custom certificate a
 	- Now you can verify that new thing is created. You will also see that this thing and policy attached to new certificate. Cretificate willbe marked as active.
 	- I added policy with just only for connect action. You can change policy as per your requirement like publish, subscribe, etc.
 
+## To Update the policy
+I have added one function called 'updatePolicy' to update the current policy. Policy update also maintains it's version id starting from 1. Each update will increment version id. You can update maximum 5 time i.e. Maximum 5 policy version at a time. If you want to update more then 5 time then you have to implement mechanism to delete older policy version. You can't delete a version which currently set to default. 
+I have used this function to update connect policy which applied on creation to connect,pub-sub,assume-role.
+
 - [Reference](https://aws.amazon.com/blogs/iot/just-in-time-registration-of-device-certificates-on-aws-iot/)
 
+Thank You.
+### -Rajan Patel
