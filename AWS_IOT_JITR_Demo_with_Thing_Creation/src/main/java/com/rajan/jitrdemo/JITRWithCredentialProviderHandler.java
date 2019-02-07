@@ -38,9 +38,9 @@ public class JITRWithCredentialProviderHandler implements RequestHandler<Request
 		context.getLogger().log("certificateId: " + input.certificateId);
 		client = AWSIotClientBuilder.defaultClient();
 		String certificateId = input.certificateId;
-		certificateARN = "arn:aws:iot:" + REGION + ":" + ACCOUNT_ID + ":cert/" + certificateId;
-
+		
 		String thingName = getThingNameFromCertificate(input.getCertificateId()).replace(" ", "_");
+		certificateARN = "arn:aws:iot:" + REGION + ":" + ACCOUNT_ID + ":client/"+thingName;
 		createThing(thingName);
 		context.getLogger().log("Thing created successfully" + thingName);
 
