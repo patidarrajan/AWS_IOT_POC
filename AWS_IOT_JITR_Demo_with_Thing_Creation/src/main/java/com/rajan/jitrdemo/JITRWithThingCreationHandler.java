@@ -12,6 +12,7 @@ import com.amazonaws.services.iot.model.AttachPolicyRequest;
 import com.amazonaws.services.iot.model.AttachThingPrincipalRequest;
 import com.amazonaws.services.iot.model.CertificateStatus;
 import com.amazonaws.services.iot.model.CreatePolicyRequest;
+import com.amazonaws.services.iot.model.CreatePolicyVersionRequest;
 import com.amazonaws.services.iot.model.CreateThingRequest;
 import com.amazonaws.services.iot.model.CreateThingResult;
 import com.amazonaws.services.iot.model.DescribeCertificateRequest;
@@ -26,8 +27,10 @@ public class JITRWithThingCreationHandler implements RequestHandler<RequestClass
 	private static final String POLICY_PREFIX = "POLICY_";
 	// Change following detail as per your use case
 	private static final String REGION = "ap-south-1";
-	private static final String ACCOUNT_ID = "XXXXXXXXXXXXX";
+	private static final String ACCOUNT_ID = "XXXXXXXXXXX";
+	private static final String ARN_PREFIX = "arn:aws:iot:" + REGION + ":" + ACCOUNT_ID;
 	private static final String POLICY_JSON = "{ \"Version\": \"2012-10-17\", \"Statement\": [{ \"Effect\": \"Allow\", \"Action\": [\"iot:Connect\"], \"Resource\": [\"%s\"] }] }";
+//	private static final String POLICY_JSON_FOR_STS_TOKEN = "{ \"Version\": \"2012-10-17\", \"Statement\": [{ \"Effect\": \"Allow\", \"Action\": [\"iot:Connect\"], \"Resource\": [\"%s\"] },{ \"Effect\": \"Allow\", \"Action\": \"iot:AssumeRoleWithCertificate\", \"Resource\": \"arn:aws:iot:"+REGION+":"+ACCOUNT_ID+":rolealias/"+CREDENTIAL_PROVIDER_RULE_ALIAS+"\" }] }";
 	private String certificateARN;
 
 	@Override
@@ -39,13 +42,13 @@ public class JITRWithThingCreationHandler implements RequestHandler<RequestClass
 		String certificateId = input.certificateId;
 
 		String thingName = getThingNameFromCertificate(input.getCertificateId()).replace(" ", "_");
-		certificateARN = "arn:aws:iot:" + REGION + ":" + ACCOUNT_ID + ":client/" + thingName;
+		certificateARN = ARN_PREFIX + ":cert/" + certificateId;
 
 		createThing(thingName);
 		context.getLogger().log("Thing created successfully" + thingName);
 
 		String policyName = POLICY_PREFIX + thingName;
-		createPolicy(policyName);
+		createPolicy(policyName, ARN_PREFIX + ":client/" + thingName);
 		context.getLogger().log("Policy created successfully: " + policyName);
 
 		attachPolicyToCertificate(policyName);
@@ -56,6 +59,9 @@ public class JITRWithThingCreationHandler implements RequestHandler<RequestClass
 
 		activateCertificate(certificateId);
 		context.getLogger().log("Certificate is activated successfully");
+
+//		updatePolicy(policyName);
+//		context.getLogger().log("Policy Updated successfully: " + policyName);
 
 		return "Policy and Thing has been created. \nPolicy and thing has been attached to certificate. \nCertificate activation is done.";
 	}
@@ -75,10 +81,12 @@ public class JITRWithThingCreationHandler implements RequestHandler<RequestClass
 	/**
 	 * Create policy
 	 * 
+	 * @param policyResourse
+	 * 
 	 * @param certificateId
 	 */
-	private void createPolicy(String policyName) {
-		String policyDocument = String.format(POLICY_JSON, certificateARN);
+	private void createPolicy(String policyName, String policyResourse) {
+		String policyDocument = String.format(POLICY_JSON, policyResourse);
 		CreatePolicyRequest createPolicyRequest = new CreatePolicyRequest();
 		createPolicyRequest.setPolicyDocument(policyDocument);
 		createPolicyRequest.setPolicyName(policyName);
@@ -174,5 +182,20 @@ public class JITRWithThingCreationHandler implements RequestHandler<RequestClass
 		context.getLogger().log("SUBJECT: " + certificate.getSubjectDN().getName());
 		context.getLogger().log("final:" + certificate.getSubjectDN().getName().split(",")[0].substring(3));
 		return certificate.getSubjectDN().getName().split(",")[0].substring(3);
+	}
+
+	/**
+	 * This is not necessary but if you want to update policy then you can call this function 
+	 * Update Policy
+	 * 
+	 * @param policyName
+	 */
+	private void updatePolicy(String policyName) {
+		String policyDocument = String.format(POLICY_JSON, certificateARN);
+		CreatePolicyVersionRequest createPolicyVersionRequest = new CreatePolicyVersionRequest();
+		createPolicyVersionRequest.setPolicyName(policyName);
+		createPolicyVersionRequest.setPolicyDocument(policyDocument);
+		createPolicyVersionRequest.setSetAsDefault(true);
+		client.createPolicyVersion(createPolicyVersionRequest);
 	}
 }
