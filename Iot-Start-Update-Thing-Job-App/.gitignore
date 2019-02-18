@@ -1,1 +1,3 @@
 /target/
+/src/main/resources/com/rajan/utils/device.crt
+/src/main/resources/com/rajan/utils/device.key
