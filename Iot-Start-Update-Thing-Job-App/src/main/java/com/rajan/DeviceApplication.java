@@ -1,6 +1,5 @@
 package com.rajan;
 
-import com.amazonaws.services.iot.client.AWSIotException;
 import com.rajan.utils.IotJobUtils;
 
 import javafx.application.Application;
@@ -20,12 +19,7 @@ public class DeviceApplication extends Application {
         primaryStage.setScene(new Scene(root, 600, 450));
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-            	try {
-					IotJobUtils.getAWS_IOT_CLIENT().disconnect();
-				} catch (AWSIotException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+            	IotJobUtils.disconnect();
             }
             });
         primaryStage.show();

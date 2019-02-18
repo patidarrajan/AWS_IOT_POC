@@ -44,12 +44,30 @@ public class JobController {
 	private Label jobNameLbl;
 
 	@FXML
-	private void initialize() throws AWSIotException {
-		IotJobUtils.getAWS_IOT_CLIENT().connect();
-		AWSIotTopic topic = new TestTopicListener(IotJobUtils.JOB_NOTIFY_TOPIC, IotJobUtils.TestTopicQos,
-				new NotifyJobListener(this));
-		IotJobUtils.getAWS_IOT_CLIENT().subscribe(topic, true);
+	private void initialize() {
+		subscribeToNotifyNewJob();
+	}
 
+	public void resetUI() {
+		jobOperationHbox.setVisible(false);
+		operationLbl.setText("Job Operation:");
+		timeoutLbl.setText("");
+		jobLbl.setText("No IOT job is available");
+		jobNameLbl.setText("");
+		startJobBtn.setVisible(false);
+		downloadStatusHbox.setVisible(false);
+		downloadStatusLbl.setText("-");
+	}
+
+	private void subscribeToNotifyNewJob() {
+		try {
+			IotJobUtils.getAWS_IOT_CLIENT().connect();
+			AWSIotTopic topic = new TestTopicListener(IotJobUtils.JOB_NOTIFY_TOPIC, IotJobUtils.TestTopicQos,
+					new NotifyJobListener(this));
+			IotJobUtils.getAWS_IOT_CLIENT().subscribe(topic, true);
+		} catch (AWSIotException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML

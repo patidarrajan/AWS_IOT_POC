@@ -5,6 +5,7 @@ public class JobDocument {
 
     private String operation;
     private String firmwareUrl;
+    private String certificatePem;
 
     public String getOperation() {
         return operation;
@@ -22,4 +23,12 @@ public class JobDocument {
         this.firmwareUrl = otherInfo;
     }
 
+	public String getCertificatePem() {
+		return certificatePem;
+	}
+
+	public void setCertificatePem(String certificatePem) {
+		this.certificatePem = certificatePem;
+	}
+ 
 }

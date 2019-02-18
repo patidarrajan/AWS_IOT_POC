@@ -1,7 +1,11 @@
 package com.rajan.utils;
 
+import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.amazonaws.services.iot.client.AWSIotQos;
+import com.amazonaws.services.iot.client.AWSIotTopic;
+import com.rajan.listener.NotifyJobListener;
+import com.rajan.listener.TestTopicListener;
 import com.rajan.utils.PropertyUtil.KeyStorePasswordPair;
 
 /**
@@ -12,6 +16,7 @@ import com.rajan.utils.PropertyUtil.KeyStorePasswordPair;
 public class IotJobUtils {
 
 	private static AWSIotMqttClient AWS_IOT_CLIENT;
+	private static CommandArguments arguments = CommandArguments.parse(new String[0]);;
 	public static final AWSIotQos TestTopicQos = AWSIotQos.QOS0;
 	public static final String PROPERTY_FILE_PATH = "app.properties";
 	public static final String AWS_THING_TOPIC_URL = "$aws/things/" + PropertyUtil.getConfig("thingName");
@@ -20,8 +25,7 @@ public class IotJobUtils {
 	public static final String START_JOB_STATUS_TOPIC = AWS_THING_TOPIC_URL + "/jobs/start-next/#";
 
 	static {
-		CommandArguments arguments = CommandArguments.parse(new String[0]);
-		initClient(arguments);
+		initClient();
 	}
 
 	public static String updateJobExecutionTopic(String jobId) {
@@ -40,7 +44,11 @@ public class IotJobUtils {
 		return AWS_IOT_CLIENT;
 	}
 
-	private static void initClient(CommandArguments arguments) {
+	public static CommandArguments getArguments() {
+		return arguments;
+	}
+
+	private static void initClient() {
 		String clientEndpoint = arguments.getNotNull("clientEndpoint", PropertyUtil.getConfig("clientEndpoint"));
 		String clientId = arguments.getNotNull("clientId", PropertyUtil.getConfig("clientId"));
 
@@ -49,14 +57,16 @@ public class IotJobUtils {
 		if (AWS_IOT_CLIENT == null && certificateFile != null && privateKeyFile != null) {
 			String algorithm = arguments.get("keyAlgorithm", PropertyUtil.getConfig("keyAlgorithm"));
 
-			KeyStorePasswordPair pair = PropertyUtil.getKeyStorePasswordPair(certificateFile, privateKeyFile, algorithm);
+			KeyStorePasswordPair pair = PropertyUtil.getKeyStorePasswordPair(certificateFile, privateKeyFile,
+					algorithm);
 
 			AWS_IOT_CLIENT = new AWSIotMqttClient(clientEndpoint, clientId, pair.keyStore, pair.keyPassword);
 		}
 
 		if (AWS_IOT_CLIENT == null) {
 			String awsAccessKeyId = arguments.get("awsAccessKeyId", PropertyUtil.getConfig("awsAccessKeyId"));
-			String awsSecretAccessKey = arguments.get("awsSecretAccessKey", PropertyUtil.getConfig("awsSecretAccessKey"));
+			String awsSecretAccessKey = arguments.get("awsSecretAccessKey",
+					PropertyUtil.getConfig("awsSecretAccessKey"));
 			String sessionToken = arguments.get("sessionToken", PropertyUtil.getConfig("sessionToken"));
 
 			if (awsAccessKeyId != null && awsSecretAccessKey != null) {
@@ -70,4 +80,18 @@ public class IotJobUtils {
 		}
 	}
 
+	public static void reloadClient() throws AWSIotException {
+		disconnect();
+		AWS_IOT_CLIENT = null;
+		initClient();
+		AWS_IOT_CLIENT.connect();
+	}
+
+	public static void disconnect() {
+		try {
+			AWS_IOT_CLIENT.disconnect();
+		} catch (AWSIotException e) {
+			e.printStackTrace();
+		}
+	}
 }

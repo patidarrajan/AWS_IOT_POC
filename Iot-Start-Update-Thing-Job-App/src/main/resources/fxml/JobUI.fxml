@@ -46,7 +46,7 @@
       </HBox>
       <HBox fx:id="downloadStatusHbox" prefHeight="60.0" prefWidth="580.0" visible="false">
          <children>
-            <Label text="Downloading Firmware Status: " textFill="#3e9a0c" wrapText="true">
+            <Label text="Status: " textFill="#3e9a0c" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font>
