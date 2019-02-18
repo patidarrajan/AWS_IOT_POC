@@ -101,7 +101,6 @@ public class CreateJobController {
 		System.out.println(createJobRequest.toString());
 		AwsBuilderUtils.getInstance().createJob(createJobRequest);
 	}
-
 }
 
 class ThingCell extends ListCell<ThingAttribute> {
