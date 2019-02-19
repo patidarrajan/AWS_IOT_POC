@@ -29,11 +29,7 @@ public class StartJobListener implements TopicListener {
 			public void run() {
 				JobQueue jobQueue = new Gson().fromJson(responseJson, JobQueue.class);
 				Execution jobExecution = jobQueue.getExecution();
-				try {
-					doJobOperationAndUpdateStatus(jobExecution, controller);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				doJobOperationAndUpdateStatus(jobExecution, controller);
 			}
 		});
 		return message.getStringPayload();
@@ -69,28 +65,33 @@ public class StartJobListener implements TopicListener {
 	 * do job operation
 	 * 
 	 * @param jobExecution
-	 * @param jobController 
+	 * @param jobController
 	 * @throws IOException
 	 */
-	private void doJobOperationAndUpdateStatus(Execution jobExecution, JobController jobController) throws IOException {
-
+	private void doJobOperationAndUpdateStatus(Execution jobExecution, JobController jobController) {
 		String operation = jobExecution.getJobDocument().getOperation();
-		switch (operation.toLowerCase()) {
-		case "change_certificate":
-			startChangeCertificateUIChange(jobExecution);
-			JobOperations.changeCertificate(jobExecution.getJobDocument());
-			updateJobAsCompleted(jobExecution.getJobId(), operation);
-			break;
-		case "firmware update operation":
-			startDownloadUIChange(jobExecution);
-			String firmwareUrl = jobExecution.getJobDocument().getFirmwareUrl();
-			JobOperations.downloadFromUrl(firmwareUrl, "firmware_update.zip");
-			updateJobAsCompleted(jobExecution.getJobId(), operation);
-			break;
-		default:
+		try {
+			switch (operation.toLowerCase()) {
+			case "change_certificate":
+				startChangeCertificateUIChange(jobExecution);
+				JobOperations.changeCertificate(jobExecution.getJobDocument());
+				updateJobAsCompleted(jobExecution.getJobId(), operation);
+				break;
+			case "firmware update operation":
+				startDownloadUIChange(jobExecution);
+				String firmwareUrl = jobExecution.getJobDocument().getFirmwareUrl();
+				JobOperations.downloadFromUrl(firmwareUrl, "firmware_update.zip");
+				updateJobAsCompleted(jobExecution.getJobId(), operation);
+				break;
+			default:
+				updateJobAsFailed(jobExecution.getJobId(), operation);
+				System.err.println("JOB Failed");
+				break;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 			updateJobAsFailed(jobExecution.getJobId(), operation);
 			System.err.println("JOB Failed");
-			break;
 		}
 	}
 
@@ -113,7 +114,7 @@ public class StartJobListener implements TopicListener {
 		} catch (AWSIotException e) {
 			System.out.println(System.currentTimeMillis() + ": publish failed for " + payload);
 		}
-		controller.getDownloadStatusLbl().setText(operation + " : Success");
+		controller.getDownloadStatusLbl().setText(operation + " : Failed");
 		controller.getJobLbl().setText(jobId + " Job Status: FAILED");
 
 	}
